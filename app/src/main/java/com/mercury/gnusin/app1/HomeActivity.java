@@ -1,7 +1,6 @@
 package com.mercury.gnusin.app1;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -20,15 +19,8 @@ public class HomeActivity extends Activity {
             items.add("Item " + i);
         }
 
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SplashActivity.isRunHomeScreen = false;
     }
 }
