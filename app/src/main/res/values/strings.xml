@@ -2,4 +2,7 @@
     <string name="app_name">App1</string>
     <string name="home_screen">Home Screen</string>
     <string name="splash_screen">Splash Screen</string>
+    <string name="item_show_dialog">You selected %s</string>
+    <string name="item_remove_dialog">Do you want to delete %s</string>
+    <string name="item_name">Item</string>
 </resources>

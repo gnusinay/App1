@@ -1,15 +1,14 @@
 package com.mercury.gnusin.app1;
 
-import android.graphics.Color;
 
 /**
  * Created by gnusin on 25.08.2016.
  */
 public class RainbowItem {
     private String text;
-    private Color color;
+    private Integer color;
 
-    public RainbowItem(String text, Color color) {
+    public RainbowItem(String text, Integer color) {
         this.text = text;
         this.color = color;
     }
@@ -22,11 +21,11 @@ public class RainbowItem {
         this.text = text;
     }
 
-    public Color getColor() {
+    public Integer getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(Integer color) {
         this.color = color;
     }
 }

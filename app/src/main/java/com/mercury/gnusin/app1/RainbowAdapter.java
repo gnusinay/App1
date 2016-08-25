@@ -1,29 +1,24 @@
 package com.mercury.gnusin.app1;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gnusin on 24.08.2016.
  */
 public class RainbowAdapter extends BaseAdapter {
 
-    private int[] colors = {Color.RED, Color.rgb(239, 179, 16), Color.YELLOW, Color.GREEN, Color.BLUE, Color.rgb(37, 141, 246), Color.rgb(162, 37, 246) };
 
-    private ArrayList<String> items;
+    private List<RainbowItem> items;
     private LayoutInflater inflater;
 
-    public RainbowAdapter(Context context, ArrayList<String> items) {
+    public RainbowAdapter(Context context, List<RainbowItem> items) {
         super();
         this.items = items;
         this.inflater = LayoutInflater.from(context);
@@ -55,14 +50,14 @@ public class RainbowAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.v_list_item_rainbow, parent, false);
         }
 
+        RainbowItem item = (RainbowItem) getItem(i);
         TextView textColorItem = (TextView) view.findViewById(R.id.textColorItem);
-        textColorItem.setText((String) getItem(i));
+        textColorItem.setText(item.getText());
 
-        int indexColor = ++i % 8;
-        if (indexColor != 0) {
+        if (item.getColor() != null) {
             View iconColorItem = view.findViewById(R.id.iconColorItem);
             iconColorItem.setVisibility(View.VISIBLE);
-            ((GradientDrawable) iconColorItem.getBackground()).setColor(colors[indexColor - 1]);
+            ((GradientDrawable) iconColorItem.getBackground()).setColor(item.getColor());
         } else {
             View iconColorItem = view.findViewById(R.id.iconColorItem);
             iconColorItem.setVisibility(View.INVISIBLE);
