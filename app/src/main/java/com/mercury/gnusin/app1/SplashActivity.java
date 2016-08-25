@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Bundle;
-import android.util.Log;
 
 public class SplashActivity extends Activity {
     private boolean isRunHomeScreen = false;
@@ -12,13 +11,13 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.a_splash);
         if (savedInstanceState != null) {
             isRunHomeScreen = savedInstanceState.getBoolean("isRunHomeScreen", false);
         }
 
         //getSupportActionBar().hide();
-        Log.d(getClass().getSimpleName(), String.valueOf(isRunHomeScreen));
+
         if (!isRunHomeScreen) {
             isRunHomeScreen = true;
             new Handler().postDelayed(new Runnable() {
@@ -37,6 +36,5 @@ public class SplashActivity extends Activity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean("isRunHomeScreen", isRunHomeScreen);
         super.onSaveInstanceState(outState);
-        Log.d("onSaveInstanceState", String.valueOf(isRunHomeScreen));
     }
 }

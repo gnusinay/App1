@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
 
     <LinearLayout
         android:id="@+id/mainLayout"
@@ -9,20 +11,25 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:weightSum="1">
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/home_screen"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/material_deep_teal_500"
+            app:title="@string/home_screen"
+            app:titleTextColor="@android:color/background_light" />
+
 
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:choiceMode="singleChoice"
+            android:divider="@drawable/rainbow_view_divider"
+            android:dividerHeight="1px"
+            android:listSelector="@drawable/rainbow_view_selector"
             android:overScrollMode="never" />
     </LinearLayout>
 
