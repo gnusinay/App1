@@ -6,13 +6,13 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/textColorItem"
+        android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="3"/>
 
     <View
-        android:id="@+id/iconColorItem"
+        android:id="@+id/color_view"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/rainbow_view_circle"/>

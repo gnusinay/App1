@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -41,11 +43,16 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
-        ListAdapter adapter = new RainbowAdapter(this, items);
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        RainbowAdapter adapter = new RainbowAdapter(this, items);
+        recyclerView.setAdapter(adapter);
+
+        /*recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
@@ -91,7 +98,7 @@ public class HomeActivity extends AppCompatActivity {
                 displayedDialog.show();
                 return true;
             }
-        });
+        });*/
 
     }
 
