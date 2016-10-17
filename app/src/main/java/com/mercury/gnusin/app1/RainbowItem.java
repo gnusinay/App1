@@ -1,9 +1,6 @@
 package com.mercury.gnusin.app1;
 
 
-/**
- * Created by gnusin on 25.08.2016.
- */
 public class RainbowItem {
     private String text;
     private Integer color;
@@ -27,5 +24,14 @@ public class RainbowItem {
 
     public void setColor(Integer color) {
         this.color = color;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        return this.getText().equals(((RainbowItem) obj).getText());
     }
 }

@@ -1,35 +1,32 @@
 package com.mercury.gnusin.app1;
 
-import android.content.DialogInterface;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
-    static private Integer[] colors = {null, Color.RED, Color.rgb(239, 179, 16), Color.YELLOW, Color.GREEN, Color.BLUE, Color.rgb(37, 141, 246), Color.rgb(162, 37, 246) };
-    static private int count = 0;
 
-    private int id;
+    private static int ACTIVITY_RESULT_CODE = 1;
+
     private List<RainbowItem> items;
-    private AlertDialog displayedDialog;
+    private RecyclerView recyclerView;
+    private CoordinatorLayout coordinatorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        id = ++count;
-        Log.d("AGn HomeActivity_" + id, "create");
+
         setContentView(R.layout.a_home);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -39,67 +36,53 @@ public class HomeActivity extends AppCompatActivity {
         if (items == null) {
             items = new ArrayList<>(20);
             for (int i = 0; i < 60;) {
-                items.add(new RainbowItem(String.format("%s %d", getString(R.string.item_name), ++i), colors[i % 8]));
+                items.add(new RainbowItem(String.format("%s %d", getString(R.string.item_name), ++i), RainbowColorsHelper.getColorByPosition(i % 8).getColor()));
             }
         }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        FloatingActionButton addItemButton = (FloatingActionButton) findViewById(R.id.add_float_button);
+        addItemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, NewItemActivity.class);
+                startActivityForResult(intent, ACTIVITY_RESULT_CODE);
+            }
+        });
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        RainbowAdapter adapter = new RainbowAdapter(this, items);
+
+        coordinatorView = (CoordinatorLayout) findViewById(R.id.coordinator_view);
+
+        final RainbowAdapter adapter = new RainbowAdapter(this, items);
         recyclerView.setAdapter(adapter);
 
-        /*recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                RainbowItem item = (RainbowItem) adapterView.getAdapter().getItem(i);
-                builder.setMessage(String.format(getString(R.string.item_show_dialog), item.getText()));
+        RainbowItemTouchCallback rainbowItemTouchCallback = new RainbowItemTouchCallback(0, ItemTouchHelper.LEFT);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(rainbowItemTouchCallback);
 
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ACTIVITY_RESULT_CODE) {
+            if (resultCode == RESULT_OK) {
+                String title = data.getStringExtra("title");
+                if (title != null && !title.isEmpty()) {
+                    int color = data.getIntExtra("color", 0);
+                    RainbowItem rainbowItem = new RainbowItem(title, RainbowColorsHelper.getColorByPosition(color).getColor());
+                    if (((RainbowAdapter) recyclerView.getAdapter()).addItem(rainbowItem)) {
+                        Snackbar.make(coordinatorView, R.string.add_new_item_successful_message, Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        Snackbar.make(coordinatorView, R.string.add_new_item_error_message, Snackbar.LENGTH_SHORT).show();
                     }
-                });
-                displayedDialog = builder.create();
-                displayedDialog.show();
+                }
             }
-        });
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final RainbowAdapter listAdapter = (RainbowAdapter) adapterView.getAdapter();
-                final int indexSelectedItems = i;
-                RainbowItem item = (RainbowItem) listAdapter.getItem(indexSelectedItems);
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setMessage(String.format(getString(R.string.item_remove_dialog), item.getText()));
-
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        listAdapter.removeItem(indexSelectedItems);
-                        listAdapter.notifyDataSetChanged();
-                        dialogInterface.cancel();
-                    }
-                });
-
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                displayedDialog = builder.create();
-                displayedDialog.show();
-                return true;
-            }
-        });*/
-
+        }
     }
 
     @Override
@@ -108,32 +91,4 @@ public class HomeActivity extends AppCompatActivity {
         return items;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("AGn HomeActivity_" + id, "destroy");
-        if (displayedDialog != null) {
-            displayedDialog.dismiss();
-        }
-
-        //finish();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("AGn HomeActivity_" + id, "pause");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("AGn HomeActivity_" + id, "stop");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("AGn HomeActivity_" + id, "resume");
-    }
 }

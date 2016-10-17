@@ -5,4 +5,12 @@
     <string name="item_show_dialog">You selected %s</string>
     <string name="item_remove_dialog">Do you want to delete %s</string>
     <string name="item_name">Item</string>
+    <string name="title_new_item_text_view">Title:</string>
+    <string name="color_new_item_text_view">Color:</string>
+    <string name="new_item_save_button">Save</string>
+
+    <string name="empty_title_new_item_error_message">Title can not to be empty</string>
+    <string name="add_new_item_error_message">Item can not to be added to list</string>
+
+    <string name="add_new_item_successful_message">Item added to list</string>
 </resources>
